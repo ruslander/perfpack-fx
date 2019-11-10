@@ -5,6 +5,7 @@ require 'pp'
 require 'uri'
 require 'json'
 require 'enumerator'
+require 'base64'
 
 set :protection, except: [ :json_csrf ]
 
@@ -18,13 +19,41 @@ get '/' do
 end
 
 
-post '/chart' do
-	content_type :json
+post '/usl' do
+  	table = params[:data] 
+  	
+  	#pp table
 
-  	model = params[:model] 
+  	eval_model(table)
   	
-  	report = eval_model(model)
-  	result = report_to_charts_data(report)
-  	
-	result.to_json
+	data = IO.read("/tmp/rplot-file.jpg")
+	Base64.encode64(data)
 end	
+
+
+
+def eval_model(table)
+	result = ""
+	error = ""
+
+	model = IO.read("./usl-calculator.r")
+		.gsub /\t/, ""
+		#.gsub ("TAB_SPEC_NX", table)
+
+	model = model.gsub("TAB_SPEC_NX", table)	
+
+	path_to_file = "/tmp/rplot-file.jpg"
+	#File.delete(path_to_file) if File.exist?(path_to_file)
+
+	Open3.popen3("Rscript --verbose -e '#{model}'") do |stdin, stdout, stderr, wait_thr|
+	  result = stdout.read
+	  error = stderr.read
+	end
+
+	if error.nil? || error.empty?
+  		return result
+	else
+		pp "!!!! #{error}"
+		return error
+	end
+end

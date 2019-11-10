@@ -1,11 +1,5 @@
 input <- read.csv(
-  text = "N,R,X
-1,205,5
-3,287,10
-5,439,10
-7,630,10
-9,833,11
-", 
+  text = "TAB_SPEC_NX", 
   header=TRUE, 
   sep=",")
 
@@ -49,14 +43,21 @@ sse <- sum((input$Norm - predict(usl))^2)
 sst <- sum((input$Norm - mean(input$Norm))^2)
 
 # Calculate Nmax and X(Nmax)
-Nmax<-sqrt((1-x.coef['alpha'])/x.coef['beta'])
-Xmax<-input$X[1]* Nmax/(1 + x.coef['alpha'] * (Nmax-1) + x.coef['beta'] * Nmax * (Nmax-1))
+Nmax<-sqrt((1-x.coef["alpha"])/x.coef["beta"])
+Xmax<-input$X[1]* Nmax/(1 + x.coef["alpha"] * (Nmax-1) + x.coef["beta"] * Nmax * (Nmax-1))
+
+jpeg("/tmp/rplot-file.jpg")
 
 # Plot all the results
-plot(x<-c(0:max(input$N)), input$X[1] * x/(1 + x.coef['alpha'] * (x-1) + x.coef['beta'] * x * (x-1)), type="l",lty="dashed",lwd=1, ylab="Throughput X(N)", xlab="Virtual Users (N)")
+plot(x<-c(0:max(input$N)), input$X[1] * x/(1 + x.coef["alpha"] * (x-1) + x.coef["beta"] * x * (x-1)), 
+	type="l",lty="dashed",lwd=1, ylab="Throughput X(N)", xlab="Virtual Users (N)")
 title("USL Scalability")
 points(input$N, input$X)
 legend("bottom", legend=eval(parse(text=sprintf(
   "expression(alpha == %.4f, beta == %.6f, R^2 == %.4f, Nmax==%.2f, Xmax==%.2f,Xroof==%.2f,Z(sec)==%.2f,TS==%15s)",
-  x.coef['alpha'], x.coef['beta'], 1-sse/sst, Nmax, Xmax, input$X[1]/x.coef['alpha'], 0.0, 
+  x.coef["alpha"], x.coef["beta"], 1-sse/sst, Nmax, Xmax, input$X[1]/x.coef["alpha"], 0.0, 
   format(Sys.time(),"%d%m%y%H%M") ))), ncol=2)
+
+dev.off()
+
+print("Done")
