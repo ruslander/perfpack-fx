@@ -37,10 +37,10 @@ def eval_model(table)
 	error = ""
 
 	model = IO.read("./usl-calculator.r")
-		.gsub /\t/, ""
-		#.gsub ("TAB_SPEC_NX", table)
 
-	model = model.gsub("TAB_SPEC_NX", table)	
+	model = model
+		.gsub("\t", "")	
+		.gsub("TAB_SPEC_NX", table)	
 
 	path_to_file = "/tmp/rplot-file.jpg"
 	#File.delete(path_to_file) if File.exist?(path_to_file)

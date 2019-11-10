@@ -46,12 +46,12 @@ sst <- sum((input$Norm - mean(input$Norm))^2)
 Nmax<-sqrt((1-x.coef["alpha"])/x.coef["beta"])
 Xmax<-input$X[1]* Nmax/(1 + x.coef["alpha"] * (Nmax-1) + x.coef["beta"] * Nmax * (Nmax-1))
 
-jpeg("/tmp/rplot-file.jpg")
+jpeg(filename ="/tmp/rplot-file.jpg", quality = 95)
 
 # Plot all the results
 plot(x<-c(0:max(input$N)), input$X[1] * x/(1 + x.coef["alpha"] * (x-1) + x.coef["beta"] * x * (x-1)), 
 	type="l",lty="dashed",lwd=1, ylab="Throughput X(N)", xlab="Virtual Users (N)")
-title("USL Scalability")
+#title("USL Scalability")
 points(input$N, input$X)
 legend("bottom", legend=eval(parse(text=sprintf(
   "expression(alpha == %.4f, beta == %.6f, R^2 == %.4f, Nmax==%.2f, Xmax==%.2f,Xroof==%.2f,Z(sec)==%.2f,TS==%15s)",
