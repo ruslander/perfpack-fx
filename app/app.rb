@@ -68,8 +68,8 @@ def eval_data(table)
 	x0 = 0;
 
 	rawData.each_with_index do |row, idx|
-		pp idx
-		pp row
+		#pp idx
+		#pp row
 
 		n = row["N"].to_i
 		x = row["X"].to_i
@@ -95,8 +95,6 @@ def eval_data(table)
 			:deviation => deviation
 		}
 	end	
-
-
 
 	result
 end
