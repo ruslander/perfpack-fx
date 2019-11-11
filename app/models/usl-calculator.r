@@ -46,7 +46,7 @@ if(any(input$Effic > 1)) {
   
   # Plot all the results
   plot(x<-c(0:max(input$N)), input$X[1] * x/(1 + x.coef["alpha"] * (x-1) + x.coef["beta"] * x * (x-1)), 
-       type="l",lty="dashed",lwd=1, ylab="Throughput X(N)", xlab="Virtual Users (N)")
+       type="l",lty="dashed",lwd=3, ylab="Throughput X(N)", xlab="Virtual Users (N)", col="blue")
   #title("USL Scalability")
   points(input$N, input$X)
   legend("bottom", legend=eval(parse(text=sprintf(

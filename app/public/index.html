@@ -133,13 +133,13 @@
 
 			$.post("/review", {data: table})
 			    .done(function(data){  
-	              	console.log(data)
+	              	//console.log(data)
 
 	              	var tbody = $("#measurements > tbody")
 	              	tbody.empty();
 
 	              	data.forEach(function(element) {
-					  console.log(element);
+					  //console.log(element);
 
 					  tbody.append("<tr>" +
 							      "<td>" + element.n +"</td>" +
