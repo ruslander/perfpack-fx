@@ -29,10 +29,14 @@
 			</div>
 			<div class="row">
 				<div class="col-4">
-				  <textarea class="span6" rows="19" cols="25" id="tabData" required></textarea>
+	
+				  	<textarea class="span6" rows="19" cols="25" id="tabData" required></textarea>
 				</div>
 				<div class="col-8">
-				  <img src="" id="img">
+				  	<img src="" id="img">
+					<div id="error-message" class="alert alert-warning" role="alert">
+						USL evaluation in progress ...
+					</div>
 				</div>
 			</div>
 		</div>
@@ -58,15 +62,19 @@
         	$.post("/usl", {data: table})
 			    .done(function(data){  
 	              	//console.log(data)
+	              	$("#img").show();
+	              	$('#error-message').hide();
 	              	$("#img").attr("src","data:image/;base64,"+data);
 			    })
 			    .fail(function(xhr, status, error) {
-			        console.log(status + " " + error)
+			        console.log(xhr.responseText);
+			        $('#error-message').text(xhr.responseText);
+			        $('#error-message').show();
+			        $("#img").hide();
 			    });
 		}
 
 		$.get("/nxr.csv", function( data ) {
-            //console.log(data)
             $('#tabData').val(data)
             evalData()
         });
