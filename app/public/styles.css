@@ -7,14 +7,7 @@ html {
 body {
   margin-bottom: 60px; /* Margin bottom by footer height */
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px; /* Set the fixed height of the footer here */
-  line-height: 60px; /* Vertically center the text there */
-  background-color: #f5f5f5;
-}
+
 
 
 /* Custom page CSS
@@ -35,4 +28,20 @@ body {
 .section{
   margin-top: 30px;
   margin-bottom: 80px;
+}
+
+#footer {
+  margin: 5em 0;
+}
+
+#footer li {
+    float: left;
+    margin-right: 1.5em;
+    margin-bottom: 1.5em;
+  }
+
+#footer p {
+    clear: left;
+    margin-bottom: 0;
+    margin-top:0;
 }
