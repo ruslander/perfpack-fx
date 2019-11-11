@@ -42,7 +42,7 @@ if(any(input$Effic > 1)) {
   Nmax<-sqrt((1-x.coef["alpha"])/x.coef["beta"])
   Xmax<-input$X[1]* Nmax/(1 + x.coef["alpha"] * (Nmax-1) + x.coef["beta"] * Nmax * (Nmax-1))
   
-  png(file ="/tmp/rplot-file.jpg", width = 700, height = 480, units = "px", pointsize = 12)
+  png(file ="/tmp/rplot-file.jpg", width = 1400, height = 800, units = "px", pointsize = 25)
   
   # Plot all the results
   plot(x<-c(0:max(input$N)), input$X[1] * x/(1 + x.coef["alpha"] * (x-1) + x.coef["beta"] * x * (x-1)), 
