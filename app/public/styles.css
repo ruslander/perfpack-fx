@@ -23,11 +23,16 @@ body {
 
 .container {
   width: auto;
-  max-width: 800px;
+  max-width: 750px;
   padding: 0 15px;
 }
 
 .col-name{
   margin-top: 35px;
   margin-bottom: 25px;
+}
+
+.section{
+  margin-top: 30px;
+  margin-bottom: 80px;
 }

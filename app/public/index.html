@@ -15,30 +15,72 @@
 <body>
 
     <main role="main" class="container">
-      <h1 class="mt-5">Perflab FX</h1>
-      <p class="lead">The purpose of models is not to fit the data but to sharpen the questions. —Sam Karlin.</p>
 
 		<div class="container">
 			<div class="row">
-				<div class="col-4">
-					<h4 class="text-center col-name">Observations</h4>
-				</div>
-				<div class="col-8">
-					<h4 class="text-center col-name">Universal Scalability Law (USL)</h4>
+				<div class="col-12">
+				      <h1 class="mt-5">Perflab FX</h1>
+				      <p class="lead">The purpose of models is not to fit the data but to sharpen the questions. —Sam Karlin.</p>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-4">
-	
-				  	<textarea class="span6" rows="19" cols="25" id="tabData" required></textarea>
+			<div class="row section">
+				<div class="col-12">
+					<h4 class="col-name">Inputs</h4>
+				  	<textarea style="min-width: 100%" rows="10" cols="75" id="tabData" required></textarea>
+					<p>N and X from performance tests, live production or any other time series source</p>
 				</div>
-				<div class="col-8">
-				  	<img src="" id="img">
+			</div>
+
+			<div class="row section">
+				<div class="col-12">
+					<h4 class="col-name">Measurements</h4>
+				  	
+				  	<table id="measurements" class="table table-bordered table-sm">
+					  <thead>
+					    <tr>
+					      <th scope="col">N</th>
+					      <th scope="col">X(N)</th>
+					      <th scope="col">RelCap C(N)</th>
+					      <th scope="col">Efficiency C/N</th>
+					      <th scope="col">Inverse N/C</th>
+					      <th scope="col">Liniarity N-1</th>
+					      <th scope="col">Deviation (N/C)-1</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr>
+					      <th scope="row">1</th>
+					      <td>@mdo</td>
+					      <td>@mdo</td>
+					      <td>@mdo</td>
+					      <td>@mdo</td>
+					      <td>@mdo</td>
+					      <td>@mdo</td>
+					      <td>@mdo</td>
+					    </tr>
+					  </tbody>
+					</table>
+
+				</div>
+			</div>
+
+
+			<div class="row section">
+				<div class="col-12">
+					<h4 class="col-name">Universal Scalability Law (USL)</h4>
+				  	<img src="" id="img" class="mx-auto d-block">
 					<div id="error-message" class="alert alert-warning" role="alert">
 						USL evaluation in progress ...
 					</div>
 				</div>
 			</div>
+
+			<div class="row section">
+				<div class="col-12">
+					&nbsp;
+				</div>
+			</div>
+
 		</div>
 
 
@@ -72,6 +114,31 @@
 			        $('#error-message').show();
 			        $("#img").hide();
 			    });
+
+			$.post("/review", {data: table})
+			    .done(function(data){  
+	              	console.log(data)
+
+	              	var tbody = $("#measurements > tbody")
+	              	tbody.empty();
+
+	              	data.forEach(function(element) {
+					  console.log(element);
+
+					  tbody.append("<tr>" +
+							      "<td>" + element.n +"</td>" +
+							      "<td>" + element.x +"</td>" +
+							      "<td>" + element.cn +"</td>" +
+							      "<td>" + element.cdivn +"</td>" +
+							      "<td>" + element.ndivc +"</td>" +
+							      "<td>" + element.liniarity +"</td>" +
+							      "<td>" + element.deviation +"</td>" +
+							    "</tr>");
+					});
+			    })
+			    .fail(function(xhr, status, error) {
+			        console.log(xhr.responseText);
+			    });    
 		}
 
 		$.get("/nxr.csv", function( data ) {
