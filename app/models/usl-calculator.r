@@ -33,6 +33,9 @@ if(any(input$Effic > 1)) {
   
   # Get alpha & beta parameters for use in plot legend
   x.coef <- coef(usl)
+
+  print("USL coeficients")
+  print(x.coef)
   
   # Determine sum-of-squares for R-squared coeff from NLS fit
   sse <- sum((input$Norm - predict(usl))^2)
@@ -46,8 +49,29 @@ if(any(input$Effic > 1)) {
   
   # Plot all the results
   plot(x<-c(0:max(input$N)), input$X[1] * x/(1 + x.coef["alpha"] * (x-1) + x.coef["beta"] * x * (x-1)), 
-       type="l",lty="dashed",lwd=3, ylab="Throughput X(N)", xlab="Virtual Users (N)", col="blue")
-  #title("USL Scalability")
+       type="l",lty="dashed",lwd=3, ylab="Throughput X(N)", xlab="Virtual Users (N)", col="red")
+
+  # 100% utilization
+  lines(x<-c(Nmax,Nmax), y<-c(0, Xmax), type = "l", col = "gray", lty="dashed")
+
+  # max throughput
+  lines(x<-c(0,max(input$N)), y<-c(Xmax, Xmax), type = "l", col = "gray", lty="dashed")
+
+  # liniarity
+  lines(x<-c(0,1, Xmax/input$X[1]), y<-c(0, input$X[1], Xmax), type = "l", col = "red", lty="dashed")
+
+  if(x.coef["alpha"] > 0 && x.coef["beta"] > 0){
+    title("Negative returns from incoherency")
+  }
+
+  if(x.coef["alpha"] > 0 && x.coef["beta"] == 0){
+    title("Cost of sharing resources, diminishing returns from contention")
+  }
+
+  if(x.coef["alpha"] == 0 && x.coef["beta"] == 0){
+    title("Equal bang for the buck")
+  }
+
   points(input$N, input$X)
   legend("bottom", legend=eval(parse(text=sprintf(
     "expression(alpha == %.4f, beta == %.6f, R^2 == %.4f, Nmax==%.2f, Xmax==%.2f,Xroof==%.2f,Z(sec)==%.2f,TS==%15s)",

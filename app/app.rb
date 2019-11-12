@@ -38,6 +38,7 @@ def eval_usl(table)
 
 	Open3.popen3("Rscript -e '#{model}'") do |stdin, stdout, stderr, wait_thr|
 	  error = stderr.read
+	  pp stdout.read
 	end
 
 	if error.nil? || error.empty?
