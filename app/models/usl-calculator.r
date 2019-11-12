@@ -42,23 +42,22 @@ if(any(input$Effic > 1)) {
   sst <- sum((input$Norm - mean(input$Norm))^2)
   
   # Calculate Nmax and X(Nmax)
-  Nmax<-sqrt((1-x.coef["alpha"])/x.coef["beta"])
+  Nmax<-sqrt((1-x.coef["alpha"])/abs(x.coef["beta"]))
   Xmax<-input$X[1]* Nmax/(1 + x.coef["alpha"] * (Nmax-1) + x.coef["beta"] * Nmax * (Nmax-1))
-  
+  Xroof<-input$X[1]/x.coef["alpha"]
+  Nopt <- abs(1 / x.coef["alpha"])
+
   png(file ="/tmp/rplot-file.jpg", width = 1400, height = 800, units = "px", pointsize = 25)
   
   # Plot all the results
   plot(x<-c(0:max(input$N)), input$X[1] * x/(1 + x.coef["alpha"] * (x-1) + x.coef["beta"] * x * (x-1)), 
        type="l",lty="dashed",lwd=3, ylab="Throughput X(N)", xlab="Virtual Users (N)", col="red")
 
-  # 100% utilization
-  lines(x<-c(Nmax,Nmax), y<-c(0, Xmax), type = "l", col = "gray", lty="dashed")
-
-  # max throughput
-  lines(x<-c(0,max(input$N)), y<-c(Xmax, Xmax), type = "l", col = "gray", lty="dashed")
-
-  # liniarity
-  lines(x<-c(0,1, Xmax/input$X[1]), y<-c(0, input$X[1], Xmax), type = "l", col = "red", lty="dashed")
+  abline(v=Nopt, col="gray")
+  #abline(h=Xroof, col="gray")
+  abline(a=0, b=Xroof/Nopt, col="gray")
+  abline(v=Nmax, col="red")
+  abline(h=Xmax, col="red")
 
   if(x.coef["alpha"] > 0 && x.coef["beta"] > 0){
     title("Negative returns from incoherency")
@@ -75,7 +74,7 @@ if(any(input$Effic > 1)) {
   points(input$N, input$X)
   legend("bottom", legend=eval(parse(text=sprintf(
     "expression(alpha == %.4f, beta == %.6f, R^2 == %.4f, Nmax==%.2f, Xmax==%.2f,Xroof==%.2f,Z(sec)==%.2f,TS==%15s)",
-    x.coef["alpha"], x.coef["beta"], 1-sse/sst, Nmax, Xmax, input$X[1]/x.coef["alpha"], 0.0, 
+    x.coef["alpha"], x.coef["beta"], 1-sse/sst, Nmax, Xmax, Xroof, 0.0, 
     format(Sys.time(),"%d%m%y%H%M") ))), ncol=2)
   
   dev.off()  
