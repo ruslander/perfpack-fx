@@ -73,7 +73,7 @@ def eval_data(table)
 		#pp row
 
 		n = row["N"].to_i
-		x = row["X"].to_i
+		x = row["X"].to_f
 
 		if idx == 0
 			x0 = x;
